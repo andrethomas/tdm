@@ -65,7 +65,7 @@ class MainWindow(QMainWindow):
 
         self.load_window_state()
 
-        if self.settings.value("connect_on_startup", False):
+        if self.settings.value("connect_on_startup", False, bool):
             self.actToggleConnect.trigger()
 
     def setup_main_layout(self):
@@ -207,12 +207,17 @@ class MainWindow(QMainWindow):
         self.broker_port = self.settings.value('port', 1883, int)
         self.broker_username = self.settings.value('username')
         self.broker_password = self.settings.value('password')
+        self.tls = self.settings.value('tls', False)
+        self.tls_path = self.settings.value('tls_path')
 
         self.mqtt.hostname = self.broker_hostname
         self.mqtt.port = self.broker_port
 
         if self.broker_username:
             self.mqtt.setAuth(self.broker_username, self.broker_password)
+
+        if self.tls:
+            self.mqtt.m_client.tls_set(self.tls_path)
 
         if self.mqtt.state == self.mqtt.Disconnected:
             self.mqtt.connectToHost()
@@ -264,7 +269,7 @@ class MainWindow(QMainWindow):
             5: "Not authorized",
         }
         self.statusBar().showMessage("Connection error: {}".format(reason[rc]))
-        self.actToggleConnectt.setChecked(False)
+        self.actToggleConnect.setChecked(False)
 
     def mqtt_message(self, topic, msg):
         found = self.device_model.findDevice(topic)

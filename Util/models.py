@@ -283,7 +283,7 @@ class ConsoleModel(QAbstractTableModel):
         return len(columns_console)
 
     def rowCount(self, parent=None):
-        return len(self._entries)
+        return 50
 
     def headerData(self, col, orientation, role=Qt.DisplayRole):
         if orientation == Qt.Horizontal and role==Qt.DisplayRole:

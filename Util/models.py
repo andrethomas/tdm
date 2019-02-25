@@ -279,15 +279,21 @@ class ConsoleModel(QAbstractTableModel):
         self._entries.insert(0, [QDateTime.currentDateTime(), topic, device, description, payload, known])
         self.endInsertRows()
 
+        length = len(self._entries)
+        if length >= 50:
+            self._entries = self._entries[0:50]
+            self.beginRemoveRows(QModelIndex(), 50, 50)
+            self.endRemoveRows()
+
     def columnCount(self, parent=None):
         return len(columns_console)
 
     def rowCount(self, parent=None):
-        return 50
+        return len(self._entries)
 
     def headerData(self, col, orientation, role=Qt.DisplayRole):
-        if orientation == Qt.Horizontal and role==Qt.DisplayRole:
-            if col <= len(columns_console):
+        if orientation == Qt.Horizontal and role == Qt.DisplayRole:
+            if 0 <= col <= len(columns_console):
                 return columns_console[col][0]
             else:
                 return ''
@@ -298,7 +304,10 @@ class ConsoleModel(QAbstractTableModel):
             col = idx.column()
 
             if role == Qt.DisplayRole:
-                return self._entries[row][col]
+                if col == CnsMdl.TIMESTAMP:
+                    return self._entries[row][CnsMdl.TIMESTAMP].toString("dd-MM-yyyy hh:mm:ss")
+                else:
+                    return self._entries[row][col]
 
             elif role == Qt.BackgroundColorRole:
                 if not self._entries[row][CnsMdl.KNOWN]:

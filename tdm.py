@@ -176,6 +176,7 @@ class MainWindow(QMainWindow):
 
     def toggle_autoupdate(self, state):
         if state:
+            self.autoupdate()
             self.auto_timer.setInterval(5000)
             self.auto_timer.start()
 

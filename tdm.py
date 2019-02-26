@@ -4,7 +4,7 @@ from json import loads
 
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QTimer
 from PyQt5.QtWidgets import QMainWindow, QDialog, QStatusBar, QApplication, QMdiArea, QTreeView, QWidget, \
-    QSplitter, QMenu, QFileDialog
+    QSplitter, QMenu, QFileDialog, QListView
 
 from GUI import *
 from GUI.BSSID import BSSIdDialog
@@ -81,15 +81,18 @@ class MainWindow(QMainWindow):
         self.devices_splitter.addWidget(mdi_widget)
 
         vl_console = VLayout()
-        self.console_view = TableView()
+        self.console_view = QListView()
+        # self.console_view = TableView()
         self.console_view.setModel(self.sorted_console_model)
-        self.console_view.setupColumns(columns_console)
+        # self.console_view.setModel(self.sorted_console_model)
+        # self.console_view.setupColumns(columns_console)
+        self.console_view.setModelColumn(CnsMdl.DESCRIPTION)
         self.console_view.setAlternatingRowColors(True)
-        self.console_view.setSortingEnabled(True)
-        self.console_view.sortByColumn(CnsMdl.TIMESTAMP, Qt.DescendingOrder)
-        self.console_view.verticalHeader().setDefaultSectionSize(20)
+        # self.console_view.setSortingEnabled(True)
+        # self.console_view.sortByColumn(CnsMdl.TIMESTAMP, Qt.DescendingOrder)
+        # self.console_view.verticalHeader().setDefaultSectionSize(20)
         self.console_view.setMinimumHeight(200)
-        self.console_view.setContextMenuPolicy(Qt.CustomContextMenu)
+        # self.console_view.setContextMenuPolicy(Qt.CustomContextMenu)
 
         vl_console.addWidget(self.console_view)
 
@@ -501,11 +504,11 @@ class MainWindow(QMainWindow):
 
         if len(topic) > longest_tp:
             longest_tp = len(topic)
-            self.console_view.resizeColumnToContents(1)
+            # self.console_view.resizeColumnToContents(1)
 
         if len(fname) > longest_fn:
             longest_fn = len(fname)
-            self.console_view.resizeColumnToContents(1)
+            # self.console_view.resizeColumnToContents(1)
 
     def view_payload(self, idx):
         idx = self.sorted_console_model.mapToSource(idx)

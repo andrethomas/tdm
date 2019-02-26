@@ -1,3 +1,4 @@
+import ssl
 import sys
 import csv
 from json import loads
@@ -217,7 +218,7 @@ class MainWindow(QMainWindow):
             self.mqtt.setAuth(self.broker_username, self.broker_password)
 
         if self.tls:
-            self.mqtt.m_client.tls_set(self.tls_path)
+            self.mqtt.m_client.tls_set(self.tls_path, tls_version=ssl.PROTOCOL_TLSv1_2)
 
         if self.mqtt.state == self.mqtt.Disconnected:
             self.mqtt.connectToHost()

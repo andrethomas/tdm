@@ -88,5 +88,6 @@ class BrokerDialog(QDialog):
         self.settings.setValue("password", self.password.text())
         self.settings.setValue("connect_on_startup", self.cbConnectStartup.isChecked())
         self.settings.setValue("tls", self.gbTLS.isChecked())
+        self.settings.setValue("tls_path", self.tls_path)
         self.settings.sync()
         self.done(QDialog.Accepted)
